@@ -16,7 +16,7 @@ npm i @stfalcon/vuex-crud-module-creator
 `some-module.js`
 
 ```js
-import { createModule } from "stfalcon-vuex-crud-module-creator";
+import { createModule } from "@stfalcon/vuex-crud-module-creator";
 const module = createModule(
   "todo",
   {
