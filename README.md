@@ -6,7 +6,7 @@ If you need to create a lot of crud operation. It's for you. The Simple wrapper 
 ## Installing
 
 ```shell
-npm i stfalcon-vuex-crud-module-creator
+npm i @stfalcon/vuex-crud-module-creator
 ```
 
 ## Usage
