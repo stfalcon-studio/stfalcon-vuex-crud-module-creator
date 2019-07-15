@@ -1,5 +1,5 @@
 {
-  "name": "stfalcon-vuex-crud-module-creator",
+  "name": "@stfalcon/vuex-crud-module-creator",
   "version": "1.0.0",
   "description": "Package for creating basic crud operation",
   "main": "src/index.js",
