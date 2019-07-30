@@ -12,14 +12,13 @@ export default (options) => {
 
     mutations: {
       [types.UPDATE_METADATA](state, metadata) {
-        console.log(metadata);
         state.metadata = { ...state.metadata, ...metadata };
       }
     },
 
     actions: {
-      clearMetadata({ commit }) {
-        commit(types.UPDATE_METADATA, options);
+      updateMetadata({ commit }, params = options) {
+        commit(types.UPDATE_METADATA, params);
       }
     }
   };
