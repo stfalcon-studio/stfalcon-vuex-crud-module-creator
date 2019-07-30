@@ -2,6 +2,8 @@ import globalConfig from "./config";
 import crud from "./parts/crud";
 import searchParams from "./parts/searchParams";
 
+import { mapActionsByProperty, mapGettersByProperty } from './helpers';
+
 const defaultOptions = {
   getKey: () => "id"
 };
@@ -40,3 +42,8 @@ export const createModule = (
 createModule.configure = (...params) => {
   Object.assign(globalConfig, ...params);
 };
+
+export {
+  mapActionsByProperty,
+  mapGettersByProperty
+}
