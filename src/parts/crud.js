@@ -58,7 +58,7 @@ export default ({ endpoint, transportAdapter, getKey }) => {
         const { metadata: cachedMetadata } = getters;
         const url = createUrl(endpoint, rest);
         const { result, metadata } = await transport().get(
-          `${url}/${id || ""}`,
+          `${url}${id ? "/" + id : ""}`,
           {
             params: {
               ...(!id && { cachedMetadata }),
