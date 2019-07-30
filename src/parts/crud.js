@@ -14,6 +14,7 @@ export default ({ endpoint, transportAdapter, getKey }) => {
 
     getters: {
       isEmpty: ({ entities }) => !Object.keys(entities).length,
+      entities: ({ entities }) => entities,
       entity: ({ entities }) => key => entities[key]
     },
 
