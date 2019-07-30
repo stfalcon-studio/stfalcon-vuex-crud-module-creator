@@ -57,7 +57,7 @@ export default ({ endpoint, transportAdapter, getKey }) => {
       async $read({ commit, getters }, { id, params, ...rest } = {}) {
         const { metadata: cachedMetadata } = getters;
         const url = createUrl(endpoint, rest);
-        const { result, metadata } = await transport().get(
+        const { result, ...metadata } = await transport().get(
           `${url}${id ? "/" + id : ""}`,
           {
             params: {

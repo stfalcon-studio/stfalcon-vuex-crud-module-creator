@@ -3,21 +3,18 @@ import crud from "./parts/crud";
 import searchParams from "./parts/searchParams";
 
 const defaultOptions = {
-  strategy: {
-    type: "basic"
-  },
   getKey: () => "id"
 };
 
 export const createModule = (
   moduleName,
-  { endpoint, getKey, transportAdapter, paginationStrategy },
+  { endpoint, getKey, transportAdapter, paginationStrategy } = {},
   { namespaced, state, getters, mutations, actions, modules } = {}
 ) => {
   const options = {
     transportAdapter,
     getKey: getKey || defaultOptions.getKey,
-    strategy: paginationStrategy || defaultOptions.strategy
+    strategy: paginationStrategy || {}
   };
 
   return {
