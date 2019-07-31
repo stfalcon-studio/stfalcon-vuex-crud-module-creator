@@ -56,6 +56,7 @@ export default ({ endpoint, transportAdapter, getKey }) => {
         commit(types.CREATE, response);
       },
       async $read({ commit, getters }, { id, params, ...rest } = {}) {
+        // eslint-disable-next-line
         const { totalCount, ...cachedMetadata } = getters.metadata;
         const url = createUrl(endpoint, rest);
         const { result, ...metadata } = await transport().get(
@@ -75,7 +76,7 @@ export default ({ endpoint, transportAdapter, getKey }) => {
         const response = await transport().put(`${endpoint}/${id}`, data);
         commit(types.UPDATE, response);
       },
-      async $delete({ commit }, id) {
+      async $remove({ commit }, id) {
         await transport().delete(`${endpoint}/${id}`);
         commit(types.REMOVE, id);
       }

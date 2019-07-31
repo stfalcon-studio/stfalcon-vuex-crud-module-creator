@@ -1,7 +1,7 @@
 # Stfalcon-vuex-crud-module-creator
 
 If you need to create a lot of crud operation. It's for you. The Simple wrapper on your vuex-modules. Included four basic operations.
-`$create`, `$read`, `$update`, `$delete`
+`$create`, `$read`, `$update`, `$remove`
 
 ## Installing
 
