@@ -54,6 +54,7 @@ export default ({ endpoint, transportAdapter, getKey }) => {
       async $create({ commit }, { data }) {
         const response = await transport().post(endpoint, data);
         commit(types.CREATE, response);
+        return response;
       },
       async $read({ commit, getters }, { id, params, ...rest } = {}) {
         // eslint-disable-next-line
@@ -75,6 +76,8 @@ export default ({ endpoint, transportAdapter, getKey }) => {
       async $update({ commit }, { id, data }) {
         const response = await transport().put(`${endpoint}/${id}`, data);
         commit(types.UPDATE, response);
+
+        return response;
       },
       async $remove({ commit }, id) {
         await transport().delete(`${endpoint}/${id}`);
