@@ -9,13 +9,13 @@ export default ({ endpoint, transportAdapter, getKey }) => {
 
   return {
     state: {
-      entities: {}
+      entities: null
     },
 
     getters: {
-      isEmpty: ({ entities }) => !Object.keys(entities).length,
+      isEmpty: ({ entities }) => entities && !Object.keys(entities).length,
       entities: ({ entities }) => entities,
-      entity: ({ entities }) => key => entities[key]
+      entity: ({ entities }) => key => entities && entities[key]
     },
 
     mutations: {
