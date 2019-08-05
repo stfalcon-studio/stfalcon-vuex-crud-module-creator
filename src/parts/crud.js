@@ -60,7 +60,7 @@ export default ({ endpoint, transportAdapter, getKey }) => {
         // eslint-disable-next-line
         const { totalCount, ...cachedMetadata } = getters.metadata;
         const url = createUrl(endpoint, rest);
-        const { result, ...metadata } = await transport().get(
+        const { results, ...metadata } = await transport().get(
           `${url}${id ? "/" + id : ""}`,
           {
             params: {
@@ -71,7 +71,7 @@ export default ({ endpoint, transportAdapter, getKey }) => {
         );
 
         commit(types.UPDATE_METADATA, metadata && metadata);
-        commit(types.SET, result);
+        commit(types.SET, results);
       },
       async $update({ commit }, { id, data }) {
         const response = await transport().put(`${endpoint}/${id}`, data);
