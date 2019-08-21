@@ -73,8 +73,8 @@ export default ({ endpoint, transportAdapter, getKey }) => {
         commit(types.UPDATE_METADATA, metadata && metadata);
         commit(types.SET, results);
       },
-      async $update({ commit }, { id, data }) {
-        const response = await transport().put(`${endpoint}/${id}`, data);
+      async $update({ commit }, { method, id, data }) {
+        const response = await transport()[method || 'put'](`${endpoint}/${id}`, data);
         commit(types.UPDATE, response);
 
         return response;
