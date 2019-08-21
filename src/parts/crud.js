@@ -25,7 +25,10 @@ export default ({ endpoint, transportAdapter, getKey }) => {
       },
       [types.UPDATE](state, payload) {
         const key = getKey(payload);
-        Vue.set(state.entities, key, payload);
+        Vue.set(state.entities, key, {
+          ...state.entities[key],
+          ...payload,
+        });
       },
       [types.REMOVE](state, id) {
         Vue.delete(state.entities, id);
@@ -36,7 +39,7 @@ export default ({ endpoint, transportAdapter, getKey }) => {
         if (isArray) {
           const collection = payload.reduce((acc, current) => {
             const key = getKey(current);
-            return { ...acc, [current[key]]: current };
+            return { ...acc, [key]: current };
           }, {});
 
           state.entities = { ...state.entities, ...collection };
@@ -44,7 +47,7 @@ export default ({ endpoint, transportAdapter, getKey }) => {
           const key = getKey(payload);
           state.entities = {
             ...state.entities,
-            ...{ [payload[key]]: payload }
+            ...{ [key]: payload }
           };
         }
       }
@@ -54,13 +57,15 @@ export default ({ endpoint, transportAdapter, getKey }) => {
       async $create({ commit }, { data }) {
         const response = await transport().post(endpoint, data);
         commit(types.CREATE, response);
+
+        console.info('CREATED ENTITY', response);
         return response;
       },
       async $read({ commit, getters }, { id, params, ...rest } = {}) {
         // eslint-disable-next-line
         const { totalCount, ...cachedMetadata } = getters.metadata;
         const url = createUrl(endpoint, rest);
-        const { results, ...metadata } = await transport().get(
+        const response = await transport().get(
           `${url}${id ? "/" + id : ""}`,
           {
             params: {
@@ -70,18 +75,25 @@ export default ({ endpoint, transportAdapter, getKey }) => {
           }
         );
 
-        commit(types.UPDATE_METADATA, metadata && metadata);
-        commit(types.SET, results);
+        const PREFIX = response.results ? 'LIST' : 'ENTITY';
+
+        commit(types.UPDATE_METADATA, response.metadata && response.metadata);
+        commit(types.SET, response.results || response);
+
+        console.info(`GET ${PREFIX}: `, response.results || response);
       },
       async $update({ commit }, { method, id, data }) {
         const response = await transport()[method || 'put'](`${endpoint}/${id}`, data);
-        commit(types.UPDATE, response);
+        commit(types.UPDATE, data);
+
+        console.info(`UPDATED ENTITY ${id}`, data);
 
         return response;
       },
       async $remove({ commit }, id) {
         await transport().delete(`${endpoint}/${id}`);
         commit(types.REMOVE, id);
+        console.info(`REMOVED ${id}`);
       }
     }
   };
