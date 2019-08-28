@@ -83,7 +83,7 @@ export default ({ endpoint, transportAdapter, getKey }) => {
       async $update({ commit, state }, { method, id, data }) {
         const response = await transport()[method || 'put'](`${endpoint}/${id}`, data);
         commit(types.UPDATE, {
-          ...state.enities[id],
+          ...state.entities[id],
           ...data,
         });
 
