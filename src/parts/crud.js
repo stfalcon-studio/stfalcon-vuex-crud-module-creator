@@ -25,10 +25,7 @@ export default ({ endpoint, transportAdapter, getKey }) => {
       },
       [types.UPDATE](state, payload) {
         const key = getKey(payload);
-        Vue.set(state.entities, key, {
-          ...state.entities[key],
-          ...payload,
-        });
+        Vue.set(state.entities, key, payload);
       },
       [types.REMOVE](state, id) {
         Vue.delete(state.entities, id);
@@ -81,10 +78,14 @@ export default ({ endpoint, transportAdapter, getKey }) => {
         commit(types.SET, response.results || response);
 
         console.info(`GET ${PREFIX}: `, response.results || response);
+        return response.results || response;
       },
-      async $update({ commit }, { method, id, data }) {
+      async $update({ commit, state }, { method, id, data }) {
         const response = await transport()[method || 'put'](`${endpoint}/${id}`, data);
-        commit(types.UPDATE, data);
+        commit(types.UPDATE, {
+          ...state.enities[id],
+          ...data,
+        });
 
         console.info(`UPDATED ENTITY ${id}`, data);
 
