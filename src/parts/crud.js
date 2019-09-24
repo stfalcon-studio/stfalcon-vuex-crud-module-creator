@@ -30,6 +30,9 @@ export default ({ endpoint, transportAdapter, getKey }) => {
       [types.REMOVE](state, id) {
         Vue.delete(state.entities, id);
       },
+      [types.RESET](state) {
+        state.entities = null;
+      },
       [types.SET](state, payload) {
         const isArray = Array.isArray(payload);
 
@@ -47,7 +50,7 @@ export default ({ endpoint, transportAdapter, getKey }) => {
             ...{ [key]: payload }
           };
         }
-      }
+      },
     },
 
     actions: {
@@ -60,7 +63,7 @@ export default ({ endpoint, transportAdapter, getKey }) => {
       },
       async $read({ commit, getters }, { id, params, ...rest } = {}) {
         // eslint-disable-next-line
-        const { totalCount, ...cachedMetadata } = getters.metadata;
+        const { totalCount, offset, limit, ...cachedMetadata } = getters.metadata;
         const url = createUrl(endpoint, rest);
         const response = await transport().get(
           `${url}${id ? "/" + id : ""}`,
@@ -74,7 +77,10 @@ export default ({ endpoint, transportAdapter, getKey }) => {
 
         const PREFIX = response.results ? 'LIST' : 'ENTITY';
 
-        commit(types.UPDATE_METADATA, response.metadata && response.metadata);
+        commit(types.UPDATE_METADATA, response.totalCount && {
+          ...cachedMetadata,
+          totalCount: response.totalCount,
+        });
         commit(types.SET, response.results || response);
 
         console.info(`GET ${PREFIX}: `, response.results || response);
@@ -95,6 +101,9 @@ export default ({ endpoint, transportAdapter, getKey }) => {
         await transport().delete(`${endpoint}/${id}`);
         commit(types.REMOVE, id);
         console.info(`REMOVED ${id}`);
+      },
+      $reset({ commit }) {
+        commit(types.RESET);
       }
     }
   };
